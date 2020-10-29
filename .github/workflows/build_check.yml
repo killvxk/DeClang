@@ -1,0 +1,17 @@
+name: build_check
+on: [push, pull_request]
+jobs:
+  ubuntu_build_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install dependency
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y cmake clang llvm golang
+      - name: build DeClang
+        run: bash script/build.sh
+      - name: build tools
+        run: bash script/build_tools.sh
+      - name: make release package check
+        run: bash script/android_release.sh v0.0.0
